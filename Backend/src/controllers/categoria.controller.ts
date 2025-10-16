@@ -9,11 +9,9 @@ export class CategoriaController {
       if (!nombre_categoria) return res.status(400).json({ message: 'la descripcion es requerido'})
         
       const categoria = await categoriaService.create(nombre_categoria, descripcion)
-      console.log(categoria)
       return res.status(201).json(categoria)
     } catch (error) {
-      console.log(error)
-      return
+      return error
     }
   }
 }

@@ -9,8 +9,6 @@ export const categoria = {
         descripcion: descripcion
       }
     })
-
-    console.log(data)
     return data
   }
 }

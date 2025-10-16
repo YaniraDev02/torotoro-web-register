@@ -3,4 +3,4 @@ import { atractivoTuristicoController } from '../controllers/atractivoTuristico.
 
 export const atractivoTuristicoRouter = Router()
 
-atractivoTuristicoRouter.post('/create/atractivoTuristico/:tipo_riesgo_id/:categoria_id', atractivoTuristicoController.createAtractivoTuristico)
+atractivoTuristicoRouter.post('/create/atractivoTuristico/:id_categoria/:id_tipo_riesgo', atractivoTuristicoController.createAtractivoTuristico)

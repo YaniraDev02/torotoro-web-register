@@ -15,21 +15,6 @@ export const atractivoTuristico = {
     tipo_riesgo_id: string,
     categoria_id: string
   ) {
-    // Verificar valores que llegan
-    console.log({
-      nombre,
-      tipo_atractivo,
-      estado,
-      tiempo_visita,
-      elevacion,
-      longitud,
-      latitud,
-      este,
-      norte,
-      tipo_riesgo_id,
-      categoria_id
-    });
-
     // Conversión segura antes de crear
     return await prisma.atractivoTuristico.create({
       data: {
