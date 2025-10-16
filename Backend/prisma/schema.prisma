@@ -1,0 +1,169 @@
+// ======================================================
+// CONFIGURACIÓN GENERAL
+// ======================================================
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ======================================================
+// ENUMS (Tipos Enumerados)
+// ======================================================
+
+enum TipoAtractivo {
+  MIRADOR
+  CANON
+  CASCADA
+  FOSIL
+  CAVERNA
+}
+
+enum EstadoAtractivoTuristico {
+  RIESGO
+  DETERIORADO
+  BUENO
+}
+
+enum NivelTipoRiesgo {
+  BAJO
+  MEDIO
+  ALTO
+}
+
+enum TipoRutaRutasAcceso {
+  CAMINO
+  CARRETERA
+  SENDERISMO
+}
+
+enum NombreCategoria {
+  TURISTICO
+  GEOLOGICO
+  RECREATIVO
+  CULTURAL
+  PALEONTOLOGICO
+}
+
+enum NombreServicios {
+  CAFETERIA
+  HOTEL
+  RESTAURANTE
+  TRANSPORTE
+  GUIA_TURISTICO
+  CENTRO_DE_SALUD
+}
+
+enum NombreCiudad {
+  LA_PAZ
+  POTOSI
+  COCHABAMBA
+  ORURO
+  SANTA_CRUZ
+  TARIJA
+  PANDO
+  CHUQUISACA
+  BENI
+}
+
+enum MedioTransporte {
+  PRIVADO
+  COMPARTIDO
+}
+
+// ======================================================
+// MODELOS (Tablas principales)
+// ======================================================
+
+model Categoria {
+  id_categoria     String           @id @default(uuid())
+  nombre_categoria NombreCategoria
+  descripcion      String?          @db.VarChar(45)
+
+  atractivos       AtractivoTuristico[]
+}
+
+model TipoRiesgo {
+  id_tipo_riesgo String             @id @default(uuid())
+  nivel          NivelTipoRiesgo    @default(MEDIO)
+  descripcion    String?            @db.VarChar(45)
+
+  atractivos     AtractivoTuristico[]
+}
+
+model AtractivoTuristico {
+  id_atrac_turist   String                     @id @default(uuid())
+  nombre            String?                    @db.VarChar(80)
+  tipo_atractivo    TipoAtractivo?
+  estado            EstadoAtractivoTuristico   @default(BUENO)
+  tiempo_visita     Int                        
+  elevacion         Int
+  longitud          Decimal?                   @db.Decimal(9, 6)
+  latitud           Decimal?                   @db.Decimal(9, 6)
+  este              Decimal?                   @db.Decimal(6, 2)
+  norte             Decimal?                   @db.Decimal(6, 2)
+  tipo_riesgo_id    String?
+  categoria_id      String?
+
+  tipoRiesgo TipoRiesgo? @relation(fields: [tipo_riesgo_id], references: [id_tipo_riesgo])
+  categoria  Categoria?  @relation(fields: [categoria_id], references: [id_categoria])
+
+  // Relaciones
+  rutas      RutasAccesoHasAtractivoTuristico[]
+  areas      AreaProt[]         
+  servicios  Servicio[]
+}
+
+model RutasAcceso {
+  id_rutas_acceso String                      @id @default(uuid())
+  tipo_ruta       TipoRutaRutasAcceso?
+  tiempo_est      Int
+  distancia_km    Decimal?                    @db.Decimal(6, 2)
+  condicion_ruta  Boolean                     @default(true)
+  medio_transp    MedioTransporte
+
+  atractivos RutasAccesoHasAtractivoTuristico[]
+}
+
+model RutasAccesoHasAtractivoTuristico {
+  rutas_acceso_id        String
+  atractivo_turistico_id String
+
+  rutas_acceso RutasAcceso        @relation(fields: [rutas_acceso_id], references: [id_rutas_acceso])
+  atractivo    AtractivoTuristico @relation(fields: [atractivo_turistico_id], references: [id_atrac_turist])
+
+  @@id([rutas_acceso_id, atractivo_turistico_id])
+}
+
+model AreaProt {
+  id_area_prot           String             @id @default(uuid())
+  area                   Unsupported("geometry(POLYGON,4326)")
+  perimetro              Unsupported("geometry(LINESTRING,4326)")
+  descripcion            String?            @db.VarChar(150)
+  atractivo_turistico_id String?
+
+  atractivo AtractivoTuristico? @relation(fields: [atractivo_turistico_id], references: [id_atrac_turist])
+}
+
+model Servicio {
+  id_servicio            String           @id @default(uuid())
+  nombre                 String           @db.VarChar(80)
+  tipo_servicio          NombreServicios  @default(HOTEL)
+  costo                  Int?
+  direccion              String?
+  telefono               String?          @db.VarChar(20)
+  calificacion           Decimal?         @db.Decimal(2,1)
+  longitud               Decimal?         @db.Decimal(9,6)
+  latitud                Decimal?         @db.Decimal(9,6)
+  atractivo_turistico_id String?
+
+  atractivo AtractivoTuristico? @relation(fields: [atractivo_turistico_id], references: [id_atrac_turist])
+}
+
+model Departamento {
+  id_ciudad     String        @id @default(uuid())
+  nombre_ciudad NombreCiudad
+}
