@@ -41,11 +41,9 @@ enum TipoRutaRutasAcceso {
 }
 
 enum NombreCategoria {
-  TURISTICO
+  ARQUEOLOGICO
   GEOLOGICO
-  RECREATIVO
-  CULTURAL
-  PALEONTOLOGICO
+  NATURAL
 }
 
 enum NombreServicios {

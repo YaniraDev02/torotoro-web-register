@@ -8,11 +8,9 @@ export const Categoría = () => {
   const navigate = useNavigate()
 
   const categorias = [
-    'TURISTICO',
+    'ARQUEOLOGICO',
     'GEOLOGICO',
-    'RECREATIVO',
-    'CULTURAL',
-    'PALEONTOLOGICO'
+    'NATURAL'
   ]
 
   const handleCreate = async (e) => {
