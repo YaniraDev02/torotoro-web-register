@@ -11,7 +11,8 @@ export class CategoriaController {
       const categoria = await categoriaService.create(nombre_categoria, descripcion)
       return res.status(201).json(categoria)
     } catch (error) {
-      return error
+      console.log(error)
+      return
     }
   }
 }

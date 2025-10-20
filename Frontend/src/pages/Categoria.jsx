@@ -22,9 +22,11 @@ export const Categoría = () => {
       body: JSON.stringify({ nombre_categoria, descripcion })
     })
 
+    console.log(response)
     if (response.ok) {
       const data = await response.json()
       setMensaje('Categoría creada correctamente')
+      console.log(data)
       setDescripcion('')
       setNombreCategoria('TURISTICO')
       navigate(`/tipoRiesgo/${data.id_categoria}`)

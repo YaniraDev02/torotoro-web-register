@@ -99,10 +99,10 @@ model AtractivoTuristico {
   estado            EstadoAtractivoTuristico   @default(BUENO)
   tiempo_visita     Int                        
   elevacion         Int
-  longitud          Decimal?                   @db.Decimal(9, 6)
-  latitud           Decimal?                   @db.Decimal(9, 6)
-  este              Decimal?                   @db.Decimal(6, 2)
-  norte             Decimal?                   @db.Decimal(6, 2)
+  longitud          Decimal?                   @db.Decimal(10, 6)
+  latitud           Decimal?                   @db.Decimal(10, 6)
+  este              Decimal?                   @db.Decimal(10, 2)
+  norte             Decimal?                   @db.Decimal(10, 2)
   tipo_riesgo_id    String?
   categoria_id      String?
 
